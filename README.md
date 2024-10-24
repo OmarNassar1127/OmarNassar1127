@@ -1,55 +1,27 @@
-<!-- Profile -->
-<p align="left"><strong><samp> &lt;&gt; </samp></strong></p>
-<p align="center">
-  <samp><br>
-    <b>
-      Hey!<br>
-      I'm Omar
-    </b><br><br>
-    <image src="https://readme-typing-svg.herokuapp.com?font=Iosevka&size=16&color=white&center=true&width=410&height=45&lines=Full+Stack+Developer."><br>
-    <b>~ Omar Nassar ~</b><br>
-  </samp><br>
-</p>
-<p align="right"><strong><samp> &lt;&gt; </samp></strong></p>
+### Hi there 👋! I'm Omar!
 
-<br>
+**Role:**
+<br/>
+<img src="https://readme-typing-svg.herokuapp.com?font=Iosevka&size=16&color=white&center=false&vCenter=false&width=410&height=45&lines=Full+Stack+Developer" />
 
-<details align="center">
-<summary><samp>extend</samp></summary>
+I’m Omar, a 26-year-old full stack developer with a passion for coding, AI, and gaming. I’m based in the Netherlands, but originally from Spain, and I’ve been diving deep into Laravel, 
+Python, and Node.Js, which led me to work at Vloto B.V., where I created a bunch of cool systems like automatic fines processing, an AI-driven rescheduling system, and an automatic P&L calculator, to name a few!
+When I’m not tinkering with backend systems, I’m probably working on personal projects that keep me up way past my bedtime. I’ve even built a convolutional neural network (CNN) to recognize nails in pictures, and I’m currently expanding it to analyze the severity of nail fungus. I love solving puzzles, both in code and in life, and there’s nothing quite like the rush of building something from scratch and seeing it all come together.
 
-<!-- Github Stats -->
-<p align="center">
-  <samp>
-    <details>
-      <summary>Skills</summary><br/>
-      <p>👨‍💻 TypeScript, JavaScript, HTML, PHP, Python, Solidity</p>
-      <p>⚙️ React, Next.js, Laravel</p>
-      <p>👁️ SCSS, CSS, Bootstrap, SHADCN/UI</p>
-      <p>💽 MongoDB, Node.js, MySQL, Express</p>
-      <p>💅🏻 Figma, Postman, RapidAPI, Netlify, Vercel, Hostinger</p><br/>
-    </details>
-    <details>
-      <summary>My Profile Stats</summary><br/>
-      <img alt="GitHub Stats" src="https://github-readme-stats.vercel.app/api?username=OmarNassar1127&show_icons=true&include_all_commits=true&count_private=true&hide=issues&hide_border=true&theme=nord"/><br/>
-    </details>
-    <details>
-      <summary>My Most Used Languages</summary><br/>
-      <img alt="Top Language" src="https://github-readme-stats.vercel.app/api/top-langs/?username=OmarNassar1127&layout=compact&hide_border=true&theme=nord"/><br/>
-      <b>Note:</b> Top languages is only a metric of the languages my public code consists of and doesn't reflect experience or skill level.<br/>
-    </details>
-  </samp>
-</p>
+### Tech Stack
 
-<!-- Additional Content -->
-<p align="center">
-  <samp>
-    <details>
-      <summary>AI Projects</summary><br/>
-      <p>🧠 AI Chatbot trained on company information</p>
-      <p>📝 AI bot for document interaction</p>
-      <p>📊 Image Segmentation Model for high-accuracy results</p><br/>
-    </details>
-  </samp>
-</p>
-
-</details>
+![Python](https://img.shields.io/badge/Python-764ABC?logo=python&logoColor=white&style=for-the-badge)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
+![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black&style=for-the-badge)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
+![Redux](https://img.shields.io/badge/Redux-764ABC?logo=redux&logoColor=white&style=for-the-badge)
+![Laravel](https://img.shields.io/badge/Laravel-F05340?logo=laravel&logoColor=white&style=for-the-badge)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-091057?logo=postgresql&logoColor=white&style=for-the-badge)
+![PHP](https://img.shields.io/badge/PHP-4169E1?logo=php&logoColor=white&style=for-the-badge)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white&style=for-the-badge)
+![HTML5](https://img.shields.io/badge/HTML5-536493?logo=html5&logoColor=white&style=for-the-badge)
+![AI](https://img.shields.io/badge/AI-FF6F00?logo=ai&logoColor=white&style=for-the-badge)
+![MySQL](https://img.shields.io/badge/MySql-FC4100?logo=mysql&logoColor=white&style=for-the-badge)
+![Shopify](https://img.shields.io/badge/Shopify-7AB55C?logo=shopify&logoColor=white&style=for-the-badge)
+![Wordpress](https://img.shields.io/badge/Wordpress-3C3D37?logo=wordpress&logoColor=white&style=for-the-badge)
+![Tailwind](https://img.shields.io/badge/Tailwind-88C273?logo=tailwind#&logoColor=white&style=for-the-badge)
