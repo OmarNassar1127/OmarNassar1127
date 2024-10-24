@@ -25,4 +25,4 @@ When I’m not tinkering with backend systems, I’m probably working on persona
 ![MySQL](https://img.shields.io/badge/MySql-FC4100?logo=mysql&logoColor=white&style=for-the-badge)
 ![Shopify](https://img.shields.io/badge/Shopify-7AB55C?logo=shopify&logoColor=white&style=for-the-badge)
 ![Wordpress](https://img.shields.io/badge/Wordpress-3C3D37?logo=wordpress&logoColor=white&style=for-the-badge)
-![Tailwind](https://img.shields.io/badge/Tilwind-88C273?logo=&logoColor=white&style=for-the-badge)
+![Tailwind](https://img.shields.io/badge/Tilwind-31511E?logo=&logoColor=white&style=for-the-badge)
