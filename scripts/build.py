@@ -33,7 +33,7 @@ INK, BODY, CANVAS, SIGNAL = "#0f0f0e", "#6b6964", "#f4f4f2", "#f2541a"
 # ---------- fonts ----------
 
 def load(name, axes=None):
-    font = TTFont(FONTS / name)
+    font = TTFont(FONTS / name, recalcTimestamp=False)
     if axes:
         font = instancer.instantiateVariableFont(font, axes)
     return font
@@ -155,9 +155,14 @@ def get_json(url, token=None):
 
 def stats():
     token = os.environ.get("GITHUB_TOKEN")
-    since = (dt.date.today() - dt.timedelta(days=30)).isoformat()
     repos = get_json(f"https://api.github.com/users/{USER}", token)["public_repos"]
-    commits = get_json(f"https://api.github.com/search/commits?q=author:{USER}+author-date:>={since}&per_page=1", token)["total_count"]
+    # The number on the public contribution graph, private contributions included.
+    since = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    query = 'query($u:String!,$f:DateTime!){user(login:$u){contributionsCollection(from:$f){contributionCalendar{totalContributions}}}}'
+    req = urllib.request.Request("https://api.github.com/graphql", data=json.dumps({"query": query, "variables": {"u": USER, "f": since}}).encode(),
+                                 headers={"User-Agent": USER, "Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=30) as r:
+        commits = json.load(r)["data"]["user"]["contributionsCollection"]["contributionCalendar"]["totalContributions"]
     npm = get_json("https://api.npmjs.org/downloads/point/last-month/" + ",".join(PACKAGES))
     downloads = sum(p["downloads"] for p in npm.values() if p)
     return repos, commits, downloads
@@ -168,7 +173,7 @@ def wide_lines(repos, commits, downloads, q):
         ([("p", "› "), ("k", q)], 0),
         ([("m", "  ● reading "), ("", "omardev.xyz"), ("m", " … "), ("g", "ok")], 0),
         ([("m", "  ● reading "), ("", f"{repos} public repositories"), ("m", " … "), ("g", "ok")], 0.45),
-        ([("m", "  ● running "), ("", "git log --since=30.days --author=omar"), ("m", " → "), ("k", f"{commits} commits")], 0.5),
+        ([("m", "  ● running "), ("", "gh contributions --last=30.days"), ("m", " → "), ("k", f"{commits} contributions")], 0.5),
         ([("m", "  ● running "), ("", "npm view " + " ".join(PACKAGES)), ("m", " → "), ("k", f"{downloads} downloads/mo")], 0.5),
         ([], 0.4),
         ([("", "AI engineer in Amsterdam. I ship AI products end to end: agents, RAG and document")], 0.25),
@@ -184,7 +189,7 @@ def narrow_lines(repos, commits, downloads, q):
         ([("p", "› "), ("k", q)], 0),
         ([("m", "  ● reading "), ("", "omardev.xyz"), ("m", " … "), ("g", "ok")], 0),
         ([("m", "  ● reading "), ("", f"{repos} repositories"), ("m", " … "), ("g", "ok")], 0.45),
-        ([("m", "  ● "), ("", "git log --since=30.days"), ("m", " → "), ("k", f"{commits} commits")], 0.5),
+        ([("m", "  ● "), ("", "gh contribs --30d"), ("m", " → "), ("k", f"{commits} contributions")], 0.5),
         ([("m", "  ● "), ("", f"npm view ({len(PACKAGES)} packages)"), ("m", " → "), ("k", f"{downloads}/mo")], 0.5),
         ([], 0.4),
         ([("", "AI engineer in Amsterdam. I ship AI")], 0.25),
@@ -240,7 +245,7 @@ text{{font:{S}px TermMono;fill:#e6edf3}}
 @keyframes blink{{0%{{opacity:1}}50%{{opacity:0}}}}
 @media (prefers-reduced-motion:reduce){{.row,.caret{{animation:none;opacity:1}}.cover{{display:none}}}}
 """
-    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="An agent session answering who Omar Nassar is: AI engineer in Amsterdam shipping agents, RAG, LLM apps, voice and computer vision. {repos} public repositories, {commits} commits in the last 30 days. Contact {EMAIL}.">
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="An agent session answering who Omar Nassar is: AI engineer in Amsterdam shipping agents, RAG, LLM apps, voice and computer vision. {repos} public repositories, {commits} contributions in the last 30 days. Contact {EMAIL}.">
 <style>{css}</style>
 <rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="16" fill="#010409" stroke="#30363d"/>
 <line x1="1" y1="{head}" x2="{W - 1}" y2="{head}" stroke="#21262d"/>
@@ -258,7 +263,7 @@ text{{font:{S}px TermMono;fill:#e6edf3}}
 if __name__ == "__main__":
     build_hero()
     data = stats()
-    print("stats: {} repos, {} commits/30d, {} npm downloads/mo".format(*data))
+    print("stats: {} repos, {} contributions/30d, {} npm downloads/mo".format(*data))
     build_terminal("terminal.svg", 900, wide_lines, data)
     build_terminal("terminal-narrow.svg", 440, narrow_lines, data)
     for f in ("hero.svg", "terminal.svg", "terminal-narrow.svg"):
