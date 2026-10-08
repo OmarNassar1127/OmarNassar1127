@@ -153,9 +153,27 @@ def get_json(url, token=None):
         return json.load(r)
 
 
+def repo_count(public):
+    """All owned repos, private included. The Action token only sees public ones,
+    so a REPO_COUNT_TOKEN secret is used when set, else the last known total."""
+    state = ASSETS / "stats.json"
+    last = json.loads(state.read_text()).get("repos", 0) if state.exists() else 0
+    pat = os.environ.get("REPO_COUNT_TOKEN")
+    if pat:
+        query = 'query($u:String!){user(login:$u){repositories(ownerAffiliations:OWNER){totalCount}}}'
+        req = urllib.request.Request("https://api.github.com/graphql", data=json.dumps({"query": query, "variables": {"u": USER}}).encode(),
+                                     headers={"User-Agent": USER, "Authorization": f"Bearer {pat}"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            total = json.load(r)["data"]["user"]["repositories"]["totalCount"]
+    else:
+        total = max(public, last)
+    state.write_text(json.dumps({"repos": total}) + "\n")
+    return total
+
+
 def stats():
     token = os.environ.get("GITHUB_TOKEN")
-    repos = get_json(f"https://api.github.com/users/{USER}", token)["public_repos"]
+    repos = repo_count(get_json(f"https://api.github.com/users/{USER}", token)["public_repos"])
     # The number on the public contribution graph, private contributions included.
     since = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=30)).strftime("%Y-%m-%dT%H:%M:%SZ")
     query = 'query($u:String!,$f:DateTime!){user(login:$u){contributionsCollection(from:$f){contributionCalendar{totalContributions}}}}'
@@ -172,7 +190,7 @@ def wide_lines(repos, commits, downloads, q):
     return [
         ([("p", "› "), ("k", q)], 0),
         ([("m", "  ● reading "), ("", "omardev.xyz"), ("m", " … "), ("g", "ok")], 0),
-        ([("m", "  ● reading "), ("", f"{repos} public repositories"), ("m", " … "), ("g", "ok")], 0.45),
+        ([("m", "  ● reading "), ("", f"{repos} repositories"), ("m", " … "), ("g", "ok")], 0.45),
         ([("m", "  ● running "), ("", "gh contributions --last=30.days"), ("m", " → "), ("k", f"{commits} contributions")], 0.5),
         ([("m", "  ● running "), ("", "npm view " + " ".join(PACKAGES)), ("m", " → "), ("k", f"{downloads} downloads/mo")], 0.5),
         ([], 0.4),
@@ -245,7 +263,7 @@ text{{font:{S}px TermMono;fill:#e6edf3}}
 @keyframes blink{{0%{{opacity:1}}50%{{opacity:0}}}}
 @media (prefers-reduced-motion:reduce){{.row,.caret{{animation:none;opacity:1}}.cover{{display:none}}}}
 """
-    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="An agent session answering who Omar Nassar is: AI engineer in Amsterdam shipping agents, RAG, LLM apps, voice and computer vision. {repos} public repositories, {commits} contributions in the last 30 days. Contact {EMAIL}.">
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="An agent session answering who Omar Nassar is: AI engineer in Amsterdam shipping agents, RAG, LLM apps, voice and computer vision. {repos} repositories, {commits} contributions in the last 30 days. Contact {EMAIL}.">
 <style>{css}</style>
 <rect x="0.5" y="0.5" width="{W - 1}" height="{H - 1}" rx="16" fill="#010409" stroke="#30363d"/>
 <line x1="1" y1="{head}" x2="{W - 1}" y2="{head}" stroke="#21262d"/>
